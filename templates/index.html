@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多AI代理协作系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🤖 多AI代理协作系统</h1>
+                <p class="subtitle">智能拆解 · 优化提示 · 综合分析 · 完美输出</p>
+                <div class="status-indicator" id="apiStatus">
+                    <span class="status-dot"></span>
+                    <span class="status-text">检查中...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 左侧：输入区 -->
+            <div class="input-section">
+                <div class="card">
+                    <h2>💬 输入您的问题</h2>
+                    <textarea 
+                        id="userInput" 
+                        placeholder="请输入您的问题或需求...&#10;&#10;例如：&#10;- 如何提高Python代码性能？&#10;- 解释机器学习中的过拟合问题&#10;- 设计一个电商网站的数据库结构"
+                        rows="8"
+                    ></textarea>
+                    
+                    <button id="submitBtn" class="btn-primary">
+                        <span class="btn-icon">🚀</span>
+                        <span class="btn-text">开始处理</span>
+                    </button>
+                    
+                    <button id="clearBtn" class="btn-secondary">
+                        <span class="btn-icon">🗑️</span>
+                        <span class="btn-text">清空</span>
+                    </button>
+                </div>
+
+                <!-- 流程可视化 -->
+                <div class="card visualization-card">
+                    <h2>📊 处理流程</h2>
+                    <div class="process-flow">
+                        <div class="flow-step" data-step="1">
+                            <div class="step-icon">🔍</div>
+                            <div class="step-name">弱AI拆解</div>
+                            <div class="step-status">等待中</div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        
+                        <div class="flow-step" data-step="2">
+                            <div class="step-icon">✨</div>
+                            <div class="step-name">提示词优化</div>
+                            <div class="step-status">等待中</div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        
+                        <div class="flow-step" data-step="3">
+                            <div class="step-icon">🧠</div>
+                            <div class="step-name">强AI分析</div>
+                            <div class="step-status">等待中</div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        
+                        <div class="flow-step" data-step="4">
+                            <div class="step-icon">📝</div>
+                            <div class="step-name">格式化输出</div>
+                            <div class="step-status">等待中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：输出区 -->
+            <div class="output-section">
+                <!-- 最终结果 -->
+                <div class="card result-card">
+                    <div class="card-header">
+                        <h2>✅ 最终结果</h2>
+                        <button id="copyResultBtn" class="btn-icon-only" title="复制结果">
+                            📋
+                        </button>
+                    </div>
+                    <div id="finalOutput" class="output-content">
+                        <div class="placeholder">
+                            处理完成后，结果将在此显示...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 中间过程（可折叠） -->
+                <div class="card">
+                    <div class="card-header collapsible" id="intermediateHeader">
+                        <h2>🔍 中间过程</h2>
+                        <span class="collapse-icon">▼</span>
+                    </div>
+                    <div id="intermediateContent" class="intermediate-content" style="display: none;">
+                        <!-- 拆解结果 -->
+                        <div class="intermediate-section">
+                            <div class="section-header">
+                                <h3>1️⃣ 内容拆解</h3>
+                                <button class="btn-copy-small" data-target="decomposed">复制</button>
+                            </div>
+                            <div id="decomposed" class="intermediate-text">等待处理...</div>
+                        </div>
+
+                        <!-- 提示词 -->
+                        <div class="intermediate-section">
+                            <div class="section-header">
+                                <h3>2️⃣ 优化提示词</h3>
+                                <button class="btn-copy-small" data-target="optimizedPrompt">复制</button>
+                            </div>
+                            <div id="optimizedPrompt" class="intermediate-text">等待处理...</div>
+                        </div>
+
+                        <!-- 综合分析 -->
+                        <div class="intermediate-section">
+                            <div class="section-header">
+                                <h3>3️⃣ 综合分析</h3>
+                                <button class="btn-copy-small" data-target="synthesized">复制</button>
+                            </div>
+                            <div id="synthesized" class="intermediate-text">等待处理...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 处理日志 -->
+                <div class="card">
+                    <div class="card-header collapsible" id="logHeader">
+                        <h2>📜 处理日志</h2>
+                        <span class="collapse-icon">▼</span>
+                    </div>
+                    <div id="processLog" class="log-content" style="display: none;">
+                        <div class="placeholder">处理日志将在此显示...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载提示 -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>AI代理处理中...</p>
+            <p class="loading-sub">请稍候，多个AI正在协同工作</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
